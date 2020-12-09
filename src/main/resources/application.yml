@@ -1,0 +1,36 @@
+spring:
+  jpa: # Configurações do JPA
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    database: POSTGRESQL
+    hibernate:
+      ddl-auto: none
+    properties:
+      hibernate:
+        id.new_generator_mappings: true #Define como o id será gerado, respeitando a sequence criada
+        jdbc.time_zone: UTC
+        cache.use_second_level_cache: false
+        cache.use_query_cache: false
+        default_schema: ${DB_SCHEMA}
+  flyway:
+    schemas: ${DB_SCHEMA}
+  datasource: # Configurações do banco de dados PostgreSQL
+    type: com.zaxxer.hikari.HikariDataSource
+    url: jdbc:postgresql://${DB_HOST}:${DB_PORT}/${DB_NAME}?ApplicationName=internet-banking-app
+    username: ${DB_USER}
+    password: ${DB_PASSWORD}
+    platform: POSTGRESQL
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      poolName: Hikari
+      minimum-idle: 2 #Mínimo de conexões inativas mantidas pelo HikariCP em um pool de conexões
+      maximum-pool-size: 5 #Pool de conexões com o banco de dados, mantém até 5 conexões aberta em cache
+      connection-timeout: 20000
+
+security:
+  jwt:
+    token:
+      secret: ssx87@5874OPH190wm
+      expiration: 3600
+
+server:
+  port: ${port:8084} # Porta do servidor apache tomcat
