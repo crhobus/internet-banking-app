@@ -4,8 +4,8 @@
   * JDK 14
   * Rest API Spring
   * Spring Boot
-  * Spring Security
-  * JWT
+  * Spring Security (Autenticação e Autorização)
+  * Token JWT
   * Spring Data JPA
     * JPA Hibernate
   * Bean Validation
@@ -20,6 +20,7 @@
   * Converter/Mapper via DozerMapper
   * Json Properties
   * API exceptions customizadas
+  * Paginação
 
 ## Contributors
 

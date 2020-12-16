@@ -1,11 +1,13 @@
 package br.com.app.user;
 
 import br.com.app.exception.BadRequestException;
+import br.com.app.exception.ResourceNotFoundException;
 import br.com.app.permission.PermissionService;
 import br.com.app.permission.model.Permission;
 import br.com.app.permission.model.PermissionEntity;
 import br.com.app.security.JwtUserDetailsFactory;
 import br.com.app.security.SecurityUtils;
+import br.com.app.user.dto.UserChangePasswordDto;
 import br.com.app.user.model.UserEntity;
 import br.com.app.user.repository.UserRepository;
 import org.apache.commons.collections.CollectionUtils;
@@ -150,6 +152,23 @@ public class UserService implements UserDetailsService {
         List<PermissionEntity> entities = permissionService.findByPermissionIn(resPermissions);
         user.setPermissions(entities);
         repository.save(user);
+    }
+
+    @Transactional
+    public String changePassword(String username, UserChangePasswordDto dto) {
+        if (dto.getPassword().equals(dto.getNewPassword())) {
+            throw new BadRequestException("As senhas informadas são iguais");
+        }
+        UserEntity user = repository.findByUsername(username);
+        if (user == null) {
+            throw new ResourceNotFoundException("Usuário " + username + " não encontrado");
+        }
+        if (!securityUtils.verifyPassword(dto.getPassword(), user.getPassword())) {
+            throw new BadRequestException("A senha atual informada está incorreta");
+        }
+        user.setPassword(securityUtils.generatePassword(dto.getNewPassword()));
+        repository.save(user);
+        return "Senha alterada com sucesso";
     }
 
 }

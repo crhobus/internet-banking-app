@@ -1,5 +1,6 @@
 package br.com.app.person.model;
 
+import br.com.app.account.model.AccountEntity;
 import br.com.app.infra.database.EntityBase;
 import br.com.app.user.model.UserEntity;
 import lombok.EqualsAndHashCode;
@@ -14,10 +15,12 @@ import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.ForeignKey;
 import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import java.time.LocalDate;
+import java.util.List;
 
 @Getter
 @Setter
@@ -64,5 +67,8 @@ public class PersonEntity extends EntityBase {
     @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "user_account", foreignKey = @ForeignKey(name = "person_user_account_fk"), referencedColumnName = "id", nullable = false, unique = true)
     private UserEntity user;
+
+    @OneToMany(mappedBy = "person", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<AccountEntity> accounts;
 
 }

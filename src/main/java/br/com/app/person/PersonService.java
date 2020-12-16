@@ -110,4 +110,9 @@ public class PersonService {
         return "Permissões removidas com sucesso do Internet Banking para o usuário " + person.getCpf() + " - " + person.getName();
     }
 
+    @Transactional(readOnly = true)
+    public PersonEntity findById(Long id) {
+        return repository.findById(id).orElse(null);
+    }
+
 }

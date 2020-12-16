@@ -64,4 +64,10 @@ public class BankService {
 
         return converter.toPagedBankDto(banks);
     }
+
+    @Transactional(readOnly = true)
+    public BankEntity findById(Long id) {
+        return repository.findById(id).orElse(null);
+    }
+
 }
